@@ -1,0 +1,35 @@
+@(message: String, postForm: Form[(String, String)])
+
+@import helper._
+
+@main("Welcome to Play 2.0") {
+
+    <script src="@routes.Assets.at("epiceditor/js/epiceditor.min.js")" type="text/javascript"></script>
+    <link rel="stylesheet" media="screen" href="@routes.Assets.at("epiceditor/themes/preview/github.css")">
+
+
+
+        @inputText(postForm("title"),
+            '_label -> "Title",
+            '_name -> "title",
+            '_id -> "title",
+            '_help -> "*",
+            '_error -> postForm.globalError
+        )
+        <div id="epiceditor"></div>
+        <button class="btn btn-primary" onClick="test()">Sign in</button>
+
+
+    <script lang="javascript">
+    var editor = new EpicEditor().load();
+    function test() {
+    $.ajax({
+        type: "POST",
+        contentType: 'text/html',
+        url: "@routes.Application.savePost",
+        data: editor.getElement('editor').body.innerHTML,
+        dataType: 'text/html'
+    });
+    }
+</script>
+}
